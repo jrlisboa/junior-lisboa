@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+}
+
+.text {
+    font-size: 1rem;
+    text-align: justify;
+    width: 430px;
+}
+
+.container img {
+    border-radius: 4px;
+}

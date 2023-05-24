@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f7f7f7;
+}
+
+.container {
+    margin: auto;
+    padding: 6% 20px;
+    max-width: 640px;
+    color: #1a1a1a;
+    font-family: 'IBM Plex Serif';
+}
+
+.title {
+    font-size: 2.6rem;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 8%;
+}
