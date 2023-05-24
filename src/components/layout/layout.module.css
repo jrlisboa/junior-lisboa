@@ -10,15 +10,20 @@ body {
 
 .container {
     margin: auto;
-    padding: 6% 20px;
+    padding: 0 20px;
     max-width: 640px;
     color: #1a1a1a;
     font-family: 'IBM Plex Serif';
 }
 
+.container main {
+    margin-bottom: 6%;
+}
+
 .title {
     font-size: 2.6rem;
     font-weight: 600;
+    margin-top: 6%;
 }
 
 .subtitle {

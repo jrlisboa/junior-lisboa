@@ -1,33 +1,27 @@
 import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
-import {
-    text,
-    container
-} from './introduction.module.css'
+
+import Card from '../card'
 
 const Introduction = () => {
     return (
-        <div className={container}>
+        <Card
+            alt="Junior Lisboa"
+            title="Junior Lisboa"
+            description="
+            I already work for a digital bank, a investment broker,
+            a robot advisor startup, a giant tech consultant and all
+            this environments help me with my current vision about
+            architecture and product delivery..."
+        >
             <StaticImage
-                src="../../images/junior.jpg"
                 placeholder="blurred"
-                layout="fixed"
-                height={150}
+                layout="constrained"
                 width={150}
-                sizes="(max-width: 350px) 100vw, 350px"
-                transformOptions={{
-                    fit: "cover",
-                    cropFocus: "attention"
-                }}
-            />
-            <p className={text}>
-                I'm a 23-year-old Brazilian software engineer.
-                <br/>I started programming when I was 13
-                and needed to earn money with it. I spent a lot of time thinking that I just programmed
-                for my paycheck, until I discovered that <strong>writing code and creating things is a part of
-                me and who I am.</strong> It also helps me to maintain my mental health.
-            </p>
-        </div>
+                height={150}
+                alt="Junior Lisboa"
+                src="../../images/junior.jpg" />
+        </Card>
     )
 }
 

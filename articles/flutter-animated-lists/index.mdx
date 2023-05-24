@@ -1,0 +1,307 @@
+---
+title: "Flutter: Comece a animar suas listas"
+date: "2023-05-23"
+slug: "flutter-animated-lists"
+lang: "pt"
+type: "article"
+category: "flutter"
+hero_image: "./flutter-animated-lists.png"
+---
+
+Muitas vezes deixamos de adicionar animações em alguns componentes da interface por questão de complexidade, justificando ser um esforço desnecessário e com valor agregado baixo, mas não é bem assim.
+
+Nossos olhos estão acostumados com movimentos orgânicos, e ver um item saindo do ponto A para o ponto B ou até mesmo sumindo da tela, sem qualquer transição indicando o que aconteceu, vai nos deixar realmente confusos.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hcwn52g74nuym39bkih5.gif)
+
+Isso se agrava quando se trata de uma lista de objetos, já que ali temos muito mais informações com as quais nos preocupar, e quanto mais dinâmico isso fica, pior é a experiência na utilização.
+
+---
+
+## O que são Animated Lists
+
+Como tudo no Flutter, é mais um widget, mas não qualquer widget. A AnimatedList faz parte do grupo de widgets que auxiliam na construção de comportamentos de transição no flutter, como por exemplo, o AnimatedContainer, AnimatedCrossFade, AnimatedOpacity, e muitos outros, que podemos abordar em um outro momento.
+
+```dart
+// just another widget
+AnimatedList();
+```
+
+Um dos pontos que faz o Flutter ser tão poderoso na construção de verdadeiras experiências, é justamente a disponibilidade dessas ferramentas de animação pug and play, que nos permitem criar transições de forma simplificada, ou customizar de maneira mais complexa se necessário.
+
+---
+
+## Funcionamento principal
+
+A **AnimatedList** tem um funcionamento parecido com a **ListView.builder**, que cria um scroll na tela estimando a quantidade de elementos que serão necessários durante o build.
+
+Porém, a forma como o **AnimatedList** decide se vai fazer o build de um item ou não é um pouco diferente, por isso a propriedade que recebe o tamanho da lista se chama `initialItemCount`, e não `itemCount` como na **ListView.builder**.
+
+Essa propriedade vai permitir que a AnimatedList configure o que vamos chamar de "lista fantasma”, onde as posições dos itens vão servir como referência para que a lista decida quais itens precisam de um novo build, e qual será a animação.
+
+
+
+### Vamos implementar um exemplo
+
+Por enquanto, vamos renderizar apenas um card ao abrir a página, sem a possibilidade de alterar a lista ou animar de alguma forma:
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  // Através da key vamos poder manipular a lista fantasma
+  final _listKey = GlobalKey<AnimatedListState>();
+
+  // A lista real, que será utilizada para construir os itens
+  final _myList = <String>['title1', 'title2', 'title3'];
+
+  // Funções para manipular as listas
+  _addNewItem() {}
+  _removeItem(int index) {}
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          // Sua animated list na àrvore de widgets
+          child: AnimatedList(
+
+            // Key única para cada lista
+            key: _listKey,
+
+            // Tamanho da lista real
+            initialItemCount: _myList.length,
+
+            // Build dos itens
+            itemBuilder: (context, index, animation) {
+
+                // Nosso item, sem animação por enquanto
+                return MyCard(
+                  onTap: () => _removeItem(index),
+                  title: _myList[index],
+                );
+            },
+          ),
+        ),
+      );
+}
+```
+
+
+
+### Itens da nossa lista
+
+Agora vamos criar também um widget que representará o nosso item, será chamado de `MyCard`. Neste exemplo vai receber um título, uma cor e um callback de click: 
+
+```dart
+class MyCard extends StatelessWidget {
+  final String title;
+  final Color color;
+  final VoidCallback? onTap;
+  const MyCard({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.color = Colors.purpleAccent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 100,
+        width: double.infinity,
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
+        color: color,
+        child: Center(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Nosso resultado até agora é uma lista simples, que poderia ter sido criada por uma ListView ou até mesmo por uma Column. Mas a partir dela começa a ficar mais interessante.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bu2s9y5z5htqnz48a1e9.png)
+
+
+---
+## Criando uma animação
+
+No momento em que a **AnimatedList** faz o build de um item, é chamada uma função (itemBuilder) que recebe as seguintes propriedades:
+
+- `context` (BuildContext)
+- `index` (int)
+- `animation` ("Animation\<double\>"")
+
+Com um `Animation<double>` disponível, podemos adicionar um widget de Transition dentro do build, que será um widget pai do item que estamos pretendendo renderizar.
+
+O Flutter disponibiliza diversos widgets com essa premissa, como: [SizeTransition](https://api.flutter.dev/flutter/widgets/SizeTransition-class.html), [ScaleTransition](https://api.flutter.dev/flutter/widgets/ScaleTransition-class.html) ou [FadeTransition](https://api.flutter.dev/flutter/widgets/FadeTransition-class.html) por exemplo.
+
+> Todos possuem a propriedade `child`, para receber o widget que será afetado visualmente sempre que a propriedade de animação mudar.
+> 
+
+Vamos utilizar um SizeTransition por enquanto:
+
+```dart
+...
+child: AnimatedList(
+  key: _listKey,
+  initialItemCount: _myList.length,
+  itemBuilder: (context, index, animation) {
+
+    // A AnimatedList controla a transição do item
+    // - Para adicionar: ela amplia o animation em ordem crescente
+    // - Para remover: ela reduz de forma decrescente
+
+    return SizeTransition(
+      sizeFactor: animation,
+      child: MyCard(
+        title: _myList[index],
+      ),
+    );
+  },
+),
+...
+```
+
+---
+
+## Adicionando e removendo itens
+
+Uma coisa importante para se lembrar, é que sempre que novos itens forem inseridos ou removidos da lista real vamos precisar avisar a **AnimatedList**, para que ela possa manipular sua lista fantasma no `index` correto, isso é feito através do `_listKey.currentState`.
+
+Podemos criar então um botão, que vai fazer o papel de incluir novos itens na nossa lista, e também avisar o **currentState**.
+
+```dart
+@override
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+
+          // Adicionando uma coluna
+          child: Column(
+            children: [
+              const SizedBox(height: 50),
+
+              // Nosso card também será o botão
+              MyCard(
+                title: 'Add new item',
+                color: Colors.orange,
+                onTap: _addNewItem,
+              ),
+
+              // Sempre expanda listas dentro de Columns
+              Expanded(
+                child: AnimatedList(
+                  ...
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+```
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ezx7ij6zxyul7n68jf4v.png)
+
+
+
+### Adicionar
+
+Agora é simples, para fazer o funcionamento deste botão, só precisamos utilizar a nossa função `_addNewItem` e inserir algo em ambas as listas (a real, e a fantasma).
+
+Para inserir itens na lista fantasma, utilizamos o método `.insertItem()`, e nessa lista você deve sempre inserir um item por vez.
+
+```dart
+_addNewItem() {
+  final index = _myList.length;
+  final intem = 'title${index + 1}';
+
+  _listKey.currentState?.insertItem(index);
+  _myList.insert(index, intem);
+}
+```
+
+
+
+### Remover
+
+Para remover um item vamos utilizar a função `.removeItem()`, e nela existe uma pequena diferença: além do index do item que será removido, vamos passar também um builder, exatamente como o que passamos para a AnimatedList através da propriedade `itemBuilder`.
+
+<aside>
+💡 **Importante**: Mantenha o conteúdo em uma variável separada antes de manipular as listas, pois isso evita que card não consiga exibir o conteúdo correto durante toda a animação.
+
+</aside>
+
+```dart
+_removeItem(int index) {
+  final title = _myList[index];
+
+  _listKey.currentState?.removeItem(
+    index,
+    (context, animation) => SizeTransition(
+      sizeFactor: animation,
+      child: MyCard(
+        title: title,
+      ),
+    ),
+  );
+  _myList.removeAt(index);
+}
+```
+
+
+---
+## Resultado
+
+Depois disso, o céu é o limite, existem milhares de formas de explorar esse comportamento nos seus projetos, utilizando diversas transições (inclusive ao mesmo tempo) e alterando comportamentos como **curva** e **duração**.
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xwnl6mx5otyl7mjsz9ay.gif)
+
+---
+
+## Animando o primeiro build
+
+Pra finalizar, utilizando os métodos que criamos aqui, para exibir uma animação inicial nos itens você só precisa fazer 2 coisas:
+
+- Dizer para a AnimatedList iniciar sem nenhum item na lista fantasma, apenas colocando **0** na propriedade `initialItemCount`.
+- Adicionar os itens após a renderização da página, isso pode ser feito chamando o `addPostFrameCallback` dentro do seu `initState`.
+
+```dart
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    for (var i = 0; i < _myList.length; i++) {
+      _listKey.currentState?.insertItem(i);
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
+  });
+}
+
+...
+AnimatedList(
+	initialItemCount: 0,
+	...
+)
+```
+
+Desta forma, essa será nossa tela após o primeiro build:
+
+![Image description](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4g64v038ebc928jlxwyy.gif)
+
+---
+
+## 💛 Muito obrigado
+
+Me avise se encontrar algo que eu precise corrigir ou melhorar. Espero que eu tenha contribuído com esse texto de alguma forma, sinta-se livre para deixar um comentário ou sugestão. 
+
+Me acompanhe no Twitter (@juniorlisboa29), estou começando a falar de tecnologia por lá também. Um abraço, e até a próxima! 🚀

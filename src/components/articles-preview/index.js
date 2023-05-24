@@ -1,5 +1,5 @@
 import React from "react";
-import { getImage } from "gatsby-plugin-image";
+import { getImage, GatsbyImage } from "gatsby-plugin-image";
 import { useStaticQuery, graphql } from 'gatsby'
 
 import Card from "../card";
@@ -52,11 +52,13 @@ const ArticlesPreview = () => {
                     id={article.id}
                     title={article.frontmatter.title}
                     description={article.excerpt}
-                    image={getImage(article.frontmatter.hero_image)}
-                    alt={article.frontmatter.title}
                     route={`/articles/${article.frontmatter.slug}`}
-                    tags={[article.frontmatter.category, article.frontmatter.lang]}
-                />
+                    tags={[article.frontmatter.category, article.frontmatter.lang]}>
+                    <GatsbyImage
+                        image={getImage(article.frontmatter.hero_image)}
+                        alt={article.frontmatter.title}
+                    />
+                </Card>
             ))}
         </div>
     )

@@ -1,5 +1,5 @@
 import React from "react";
-import { getImage } from "gatsby-plugin-image";
+import { getImage, GatsbyImage } from "gatsby-plugin-image";
 import { useStaticQuery, graphql } from 'gatsby'
 
 import Card from "../card";
@@ -52,11 +52,14 @@ const ProjectsPreview = () => {
                     id={project.id}
                     title={project.frontmatter.title}
                     description={project.excerpt}
-                    image={getImage(project.frontmatter.hero_image)}
-                    alt={project.frontmatter.title}
                     route={`/projects/${project.frontmatter.slug}`}
                     tags={[project.frontmatter.category, project.frontmatter.stack]}
-                />
+                >
+                    <GatsbyImage
+                        image={getImage(project.frontmatter.hero_image)}
+                        alt={project.frontmatter.title}
+                    />
+                </Card>
             ))}
         </div>
     )
