@@ -1,0 +1,69 @@
+.title {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    font-weight: 400;
+    color: #1a202c;
+}
+
+.mainImage {
+    margin-bottom: 1.5rem;
+}
+
+.date {
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #4b5563;
+}
+
+.content p, .content ul, .content dd {
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.content h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+}
+
+.content h3 {
+    margin-bottom: 0.80rem;
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: 600;
+}
+
+.content hr {
+    margin: 3rem 0;
+    border-top-width: 1px;
+    border-color: #e2e8f0;
+}
+
+.content img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.content pre code {
+    font-size: 0.875rem;
+}
+
+.content p code, .content li code, .content dd code {
+    font-size: 0.850rem;
+    padding: 0.12rem 0.5rem;
+    background-color: #ccc;
+    color: #1a1a1a;
+}
+
+.link {
+    color: #1a1a1a;
+    font-weight: 500;
+}

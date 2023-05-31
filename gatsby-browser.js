@@ -12,3 +12,5 @@ import "@fontsource/ibm-plex-serif/600-italic.css"
 
 import "@fontsource/ibm-plex-serif/700.css"
 import "@fontsource/ibm-plex-serif/700-italic.css"
+
+import "prismjs/themes/prism-okaidia.css"
