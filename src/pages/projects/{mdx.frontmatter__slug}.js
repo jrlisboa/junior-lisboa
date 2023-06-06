@@ -1,27 +1,30 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 
-const BlogPost = ({ data, children }) => {
+import { content, title, mainImage, date, link } from '../articles/article.module.css'
+
+const Project = ({ data, children }) => {
   const image = getImage(data.mdx.frontmatter.hero_image)
 
   return (
     <Layout pageTitle={data.mdx.frontmatter.title}>
-      <p>{data.mdx.frontmatter.date}</p>
-      <GatsbyImage
-        image={image}
-        alt={data.mdx.frontmatter.hero_image_alt}
-      />
-      <p>
-        Photo Credit:{" "}
-        <a href={data.mdx.frontmatter.hero_image_credit_link}>
-          {data.mdx.frontmatter.hero_image_credit_text}
-        </a>
-      </p>
-      {children}
+      <Link className={link} to="/projects">All projects</Link>
+      <p className={date}>{data.mdx.frontmatter.date}</p>
+      <h2 className={title}>{data.mdx.frontmatter.title}</h2>
+      <div className={mainImage}>
+        <GatsbyImage
+          image={image}
+          alt={data.mdx.frontmatter.hero_image_alt}
+        />  
+      </div>
+      <div className={content}>
+        {children}
+      </div>
+      <Link className={link} to="/projects">All projects</Link>
     </Layout>
   )
 }
@@ -32,9 +35,6 @@ export const query = graphql`
       frontmatter {
         title
         date(formatString: "MMMM D, YYYY")
-        hero_image_alt
-        hero_image_credit_link
-        hero_image_credit_text
         hero_image {
           childImageSharp {
             gatsbyImageData
@@ -47,4 +47,4 @@ export const query = graphql`
 
 export const Head = ({ data }) => <Seo title={data.mdx.frontmatter.title} />
 
-export default BlogPost
+export default Project

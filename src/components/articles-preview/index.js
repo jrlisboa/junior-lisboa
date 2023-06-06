@@ -1,18 +1,19 @@
 import React from "react";
 import { getImage, GatsbyImage } from "gatsby-plugin-image";
-import { useStaticQuery, graphql } from 'gatsby'
+import { useStaticQuery, graphql, Link } from 'gatsby'
 
 import Card from "../card";
 
 import {
     title,
-    container
+    container,
+    viewAll,
 } from './articles-preview.module.css'
 
 const ArticlesPreview = () => {
     const data = useStaticQuery(graphql`
         query {
-            allMdx(sort: { frontmatter: { date: DESC }}, filter: {frontmatter: {type: {eq: "article"}}}) {
+            allMdx(limit: 2, sort: { frontmatter: { date: DESC }}, filter: {frontmatter: {type: {eq: "article"}}}) {
                 nodes {
                     frontmatter {
                         title
@@ -60,6 +61,10 @@ const ArticlesPreview = () => {
                     />
                 </Card>
             ))}
+
+            <div className={viewAll}>
+                <Link to="/articles">view all articles</Link>
+            </div>
         </div>
     )
 }

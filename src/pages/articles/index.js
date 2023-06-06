@@ -1,15 +1,20 @@
 import * as React from 'react'
-import { Link, graphql } from 'gatsby'
+import { graphql } from 'gatsby'
 
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 import Card from '../../components/card'
+import Social from '../../components/social'
 
 const BlogPage = ({ data }) => {
   const articles = data.allMdx.nodes
   return (
-    <Layout pageTitle="My Blog Posts">
+    <Layout pageTitle="Things I Wrote">
+      <Social />
+      <h2>
+          Things I wrote
+      </h2>
       {articles.map(article => (
           <Card
               id={article.id}
@@ -56,6 +61,6 @@ export const query = graphql`
   }
 `
 
-export const Head = () => <Seo title="My Blog Posts" />
+export const Head = () => <Seo title="Things I Wrote" />
 
 export default BlogPage

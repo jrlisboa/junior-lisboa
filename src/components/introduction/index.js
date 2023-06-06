@@ -7,9 +7,9 @@ const Introduction = () => {
     return (
         <Card
             alt="Junior Lisboa"
-            title="Junior Lisboa"
+            title="Some things about me and my career"
             description="
-            I already work for a digital bank, a investment broker,
+            I work for a digital bank, had worked for a investment broker,
             a robot advisor startup, a giant tech consultant and all
             this environments help me with my current vision about
             architecture and product delivery..."
