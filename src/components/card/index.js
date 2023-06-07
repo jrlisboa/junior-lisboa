@@ -3,12 +3,14 @@ import { Link } from "gatsby";
 
 import {
     link,
+    staticContainer,
     container,
     content,
     tagsList,
 } from './card.module.css'
 
 const Card = ({
+    isStatic = false,
     id,
     title,
     description,
@@ -18,7 +20,7 @@ const Card = ({
 }) => {
     return (
         <Link to={route} className={link}>
-            <div key={id} className={container}>
+            <div key={id} className={isStatic ? staticContainer : container}>
                 {children}
                 <div className={content}>
                     <h3>{title}</h3>

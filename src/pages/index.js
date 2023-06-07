@@ -11,12 +11,12 @@ const IndexPage = () => {
     <Layout pageTitle="Home Page">
       <Social />
       <Introduction />
-      <ArticlesPreview />
       <ProjectsPreview />
+      <ArticlesPreview />
     </Layout>
   )
 }
 
-export const Head = () => <Seo title={"Home Page"} />
+export const Head = () => <Seo title={"Home"} />
 
 export default IndexPage

@@ -47,13 +47,13 @@ For now, let's just render a single card when opening the page, without the poss
 
 ```dart
 class _MyHomePageState extends State<MyHomePage> {
-  // Através da key vamos poder manipular a lista fantasma
+  // With the key we will be able to manipulate the ghost list
   final _listKey = GlobalKey<AnimatedListState>();
 
-  // A lista real, que será utilizada para construir os itens
+  // The real list, which will be used to build the items
   final _myList = <String>['title1', 'title2', 'title3'];
 
-  // Funções para manipular as listas
+  // Functions to manipulate the lists
   _addNewItem() {}
   _removeItem(int index) {}
 
@@ -63,16 +63,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // Sua animated list na àrvore de widgets
           child: AnimatedList(
 
-            // Key única para cada lista
+            // Unic key to each list
             key: _listKey,
 
-            // Tamanho da lista real
+            // Real list size
             initialItemCount: _myList.length,
 
-            // Build dos itens
             itemBuilder: (context, index, animation) {
 
-                // Nosso item, sem animação por enquanto
+                // Our item, without animation for now
                 return MyCard(
                   onTap: () => _removeItem(index),
                   title: _myList[index],
@@ -301,6 +300,6 @@ In this way, this will be our screen after the first build:
 
 ## 💛 Thank you very much
 
-Let me know if you find anything that I need to correct or improve. I hope I've contributed to you in some way with this text, feel free to leave a comment or suggestion.
+Let me know if you find anything that I need to correct or improve. I hope I've contributed to you in some way with this text.
 
 Follow me on Twitter (@juniorlisboa29), I'm also starting to talk about technology there. A hug, and see you next time! 🚀

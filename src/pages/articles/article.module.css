@@ -68,6 +68,17 @@
     font-size: 0.875rem;
 }
 
+.content blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 2px solid #e2e2e2;
+    color: #4a5568;
+}
+
+.content blockquote p {
+    margin: 0
+}
+
 .content p code, .content li code, .content dd code {
     font-size: 0.850rem;
     padding: 0.12rem 0.5rem;

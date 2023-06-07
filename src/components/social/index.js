@@ -8,6 +8,13 @@ import {
     container,
 } from './social.module.css'
 
+const socialLinks = {
+    github: 'https://github.com/jrlisboa',
+    linkedin: 'https://www.linkedin.com/in/juniorlisboa/',
+    twitter: 'https://twitter.com/juniorlisboa29',
+    tabnews: 'https://www.tabnews.com.br/juniorlisboa',
+}
+
 const Social = () => {
     const icons = useSocialIcons()
 
@@ -15,7 +22,7 @@ const Social = () => {
         <div className={container}>
             {icons.map(icon => (
                 <SocialButton
-                    link="google.com"
+                    link={socialLinks[icon.name]}
                     image={getImage(icon)}
                     title={icon.name}
                 />
