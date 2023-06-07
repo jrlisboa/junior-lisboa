@@ -36,6 +36,7 @@ export const query = graphql`
         title
         date(formatString: "MMMM D, YYYY")
         hero_image {
+          absolutePath
           childImageSharp {
             gatsbyImageData
           }
@@ -45,6 +46,12 @@ export const query = graphql`
   }
 `
 
-export const Head = ({ data }) => <Seo title={data.mdx.frontmatter.title} />
+export const Head = ({ data }) => (<Seo
+    title={data.mdx.frontmatter.title}
+    description={data.mdx.excerpt}
+    image={data.mdx.frontmatter.hero_image.absolutePath}
+    pathname={`/projects/${data.mdx.frontmatter.slug}`}i
+    />
+)
 
 export default Project

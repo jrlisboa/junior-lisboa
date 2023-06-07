@@ -1,19 +1,30 @@
-import * as React from 'react'
-import { graphql, useStaticQuery } from 'gatsby'
+import React from "react"
+import { useSiteMetadata } from "./use-site-metadata"
 
-const Seo = ({ title }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+const Seo = ({ title, image, description, pathname, children }) => {
+  const { title: defaultTitle, description: defaultDescription, image: defaultImage, siteUrl, twitterUsername } = useSiteMetadata()
+
+  const seo = {
+    title: title ? `${title} | ${defaultTitle}` : defaultTitle,
+    description: description || defaultDescription,
+    image: `${siteUrl}${image || defaultImage}`,
+    url: `${siteUrl}${pathname || ``}`,
+    twitterUsername,
+  }
 
   return (
-    <title>{title} | {data.site.siteMetadata.title}</title>
+    <>
+      <title>{seo.title}</title>
+      <meta name="description" content={seo.description} />
+      <meta name="image" content={seo.image} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={seo.title} />
+      <meta name="twitter:url" content={seo.url} />
+      <meta name="twitter:description" content={seo.description} />
+      <meta name="twitter:image" content={seo.image} />
+      <meta name="twitter:creator" content={seo.twitterUsername} />
+      {children}
+    </>
   )
 }
 
