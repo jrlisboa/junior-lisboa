@@ -1,8 +1,23 @@
-import React from "react"
-import { useSiteMetadata } from "./use-site-metadata"
+import React, { useEffect } from "react";
+import { useSiteMetadata } from "./use-site-metadata";
+
+let getAnalytics = () => {};
+let app = () => {};
+
+if (typeof window !== "undefined") {
+  getAnalytics = require("firebase/analytics").getAnalytics;
+  app = require("gatsby-plugin-firebase-v9.0").default;
+}
 
 const Seo = ({ title, image, description, pathname, children }) => {
-  const { title: defaultTitle, description: defaultDescription, image: defaultImage, siteUrl, twitterUsername } = useSiteMetadata()
+  const analytics = getAnalytics(app);
+  const {
+    title: defaultTitle,
+    description: defaultDescription,
+    image: defaultImage,
+    siteUrl,
+    twitterUsername,
+  } = useSiteMetadata();
 
   const seo = {
     title: title ? `${title} | ${defaultTitle}` : defaultTitle,
@@ -10,7 +25,15 @@ const Seo = ({ title, image, description, pathname, children }) => {
     image: `${siteUrl}${image || defaultImage}`,
     url: `${siteUrl}${pathname || ``}`,
     twitterUsername,
-  }
+  };
+
+  useEffect(() => {
+    analytics == null ?? analytics.logEvent("page_view", {
+      page_title: seo.title,
+      page_location: seo.url,
+      page_path: seo.url,
+    })
+  }, [seo.title, seo.url, analytics]);
 
   return (
     <>
@@ -25,7 +48,7 @@ const Seo = ({ title, image, description, pathname, children }) => {
       <meta name="twitter:creator" content={seo.twitterUsername} />
       {children}
     </>
-  )
-}
+  );
+};
 
-export default Seo
+export default Seo;
