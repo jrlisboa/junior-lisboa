@@ -8,7 +8,7 @@ import {
 const Footer = () => {
     return (
         <footer className={footer}>
-            <p>{"It's just a footer - 2023"}</p>
+            <p>{"Just a footer - 2025"}</p>
             <p>{"Thanks for your time 🚀"}</p>
             {/* <Link to="/">
                 <span>Buy me a coffee ☕</span>
